@@ -28,13 +28,17 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          secret-key: 34v2b323uhu23728487824982392neuyg7g4763237dsdsd23jhj2j2
-          expiration: 8640000
+
 application:
+  security:
+    jwt:
+      secret-key: 34v2b323uhu23728487824982392neuyg7g4763237dsdsd23jhj2j2
+      expiration: 8640000
+
+  mailing:
+    frontend:
+      activation-url: http://localhost:5173/activate-account
+
   file:
     uploads:
       photos-output-path: ./uploads

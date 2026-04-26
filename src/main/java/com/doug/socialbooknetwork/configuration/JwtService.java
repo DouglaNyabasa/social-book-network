@@ -16,13 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.doug.socialbooknetwork.Utils.Constants.jwtExpiration;
+import static com.doug.socialbooknetwork.Utils.Constants.secretKey;
+
 @Service
 public class JwtService {
 
-    @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
-    @Value("${application.security.jwt.secret-key}")
-    private String secretKey;
+//    private long jwtExpiration;
+//    private String secretKey;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
