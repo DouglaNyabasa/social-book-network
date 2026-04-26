@@ -32,7 +32,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: "http://localhost:9090/realms/book-social-network"
+          secret-key: 34v2b323uhu23728487824982392neuyg7g4763237dsdsd23jhj2j2
+          expiration: 8640000
 application:
   file:
     uploads:
