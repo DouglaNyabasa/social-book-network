@@ -1,7 +1,6 @@
 package com.doug.socialbooknetwork.payload.request;
 
-
-
+import com.doug.socialbooknetwork.domain.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,12 +8,14 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegistrationRequest {
+
 
     @NotEmpty(message = "FirstName required")
     @NotBlank(message = "FirstName required")
@@ -30,4 +31,6 @@ public class RegistrationRequest {
     @NotEmpty(message = "Password required")
     @NotBlank(message = "Password required")
     String password;
+    Role roles;
+
 }
