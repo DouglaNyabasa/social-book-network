@@ -11,19 +11,13 @@ import com.doug.socialbooknetwork.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 
-import static com.doug.socialbooknetwork.Utils.Constants.activationUrl;
+import static com.doug.socialbooknetwork.utils.Constants.activationUrl;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +27,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
-//    private final  String activationUrl;
-
 
 
     @Override
@@ -43,8 +35,6 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(request.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("User: %s already exists".formatted(request.getEmail()));
         }
-
-
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -61,6 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
+        String activationUrl = "http://localhost:5173/activate-account";
         emailService.sendEmail(
                 user.getEmail(),
                 user.fullName(),

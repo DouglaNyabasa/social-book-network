@@ -1,4 +1,4 @@
-package com.doug.socialbooknetwork.Utils;
+package com.doug.socialbooknetwork.utils;
 
 public class Constants {
     public static final String secretKey = "mmpFwuOG4AETrObVpU9BK98UYekUJSutRgkWTrP7ISA";
