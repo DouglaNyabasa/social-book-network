@@ -17,32 +17,30 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "books")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "feedback")
 @EntityListeners(AuditingEntityListener.class)
-public class Book {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-     Long id;
-     String title;
-     String authorName;
-     String isbn;
-     String synopsis;
-     String bookCover;
-     boolean archived;
-     boolean shareable;
-     @CreatedDate
-     @Column(nullable = false,updatable = false)
-     LocalDateTime createdDate;
+    Long id;
+
+    Double note;
+    String comment;
+    @CreatedDate
+    @Column(nullable = false,updatable = false)
+    LocalDateTime createdDate;
     @LastModifiedDate
     @Column(insertable = false)
-     LocalDateTime lastModifiedDate;
+    LocalDateTime lastModifiedDate;
     @CreatedBy
-     @Column(nullable = false,updatable = false)
-     Long createdBy;
+    @Column(nullable = false,updatable = false)
+    Long createdBy;
     @LastModifiedBy
-     @Column(insertable = false)
-     Long lastModifiedBy;
+    @Column(insertable = false)
+    Long lastModifiedBy;
+
+
 
 }
