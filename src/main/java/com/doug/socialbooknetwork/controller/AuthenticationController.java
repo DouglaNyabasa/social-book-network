@@ -1,6 +1,10 @@
 package com.doug.socialbooknetwork.controller;
 
+import com.doug.socialbooknetwork.payload.request.AuthRequest;
 import com.doug.socialbooknetwork.payload.request.RegistrationRequest;
+import com.doug.socialbooknetwork.payload.response.ApiResponse;
+import com.doug.socialbooknetwork.payload.response.AuthResponse;
+import com.doug.socialbooknetwork.service.UserService;
 import com.doug.socialbooknetwork.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
 
     @PostMapping("/register")
@@ -24,6 +29,11 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequest request) throws MessagingException {
             userServiceImpl.register(request);
             return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody @Valid AuthRequest request){
+        return ResponseEntity.ok(userService.authenticate(request));
     }
 
 

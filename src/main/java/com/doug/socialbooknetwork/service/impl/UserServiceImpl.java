@@ -4,7 +4,9 @@ import com.doug.socialbooknetwork.domain.EmailTemplate;
 import com.doug.socialbooknetwork.exceptionHandling.UserAlreadyExistsException;
 import com.doug.socialbooknetwork.models.Token;
 import com.doug.socialbooknetwork.models.User;
+import com.doug.socialbooknetwork.payload.request.AuthRequest;
 import com.doug.socialbooknetwork.payload.request.RegistrationRequest;
+import com.doug.socialbooknetwork.payload.response.AuthResponse;
 import com.doug.socialbooknetwork.repository.TokenRepository;
 import com.doug.socialbooknetwork.repository.UserRepository;
 import com.doug.socialbooknetwork.service.UserService;
@@ -85,6 +87,11 @@ public class UserServiceImpl implements UserService {
             codeBuilder.append(characters.charAt(randomIndex));
         }
         return codeBuilder.toString();
+    }
+
+    @Override
+    public AuthResponse authenticate(AuthRequest request) {
+        return null;
     }
 
 
