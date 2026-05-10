@@ -2,6 +2,7 @@ package com.doug.socialbooknetwork.exceptionHandling;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Map;
 import java.util.Set;
@@ -12,11 +13,12 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExceptionResponse {
 
-    private Integer businessErrorCode;
-    private String businessErrorDescription;
-    private String error;
-    private Set<String> validationErrors;
-    private Map<String,String> errors;
+     Integer businessErrorCode;
+     String businessErrorDescription;
+     String error;
+     Set<String> validationErrors;
+     Map<String,String> errors;
 }
