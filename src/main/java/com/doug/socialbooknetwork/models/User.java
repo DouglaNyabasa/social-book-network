@@ -1,30 +1,30 @@
 package com.doug.socialbooknetwork.models;
 
 
+import com.doug.socialbooknetwork.common.BaseEntity;
 import com.doug.socialbooknetwork.domain.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Builder
+@SuperBuilder
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
+@Table(name = "user")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+
     String firstname;
     String lastname;
     @Column(unique = true)
@@ -35,12 +35,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column( nullable = false)
     Role roles;
-    @CreatedDate
-    @Column(nullable = false,updatable = false)
-    LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(insertable = false)
-    LocalDateTime lastModifiedDate;
+    @OneToMany(mappedBy = "owner")
+    List<Book> books;
+
+
+    @OneToMany(mappedBy = "user")
+    List<BookTransactionHistory> histories;
+
 
 
     public   String fullName(){

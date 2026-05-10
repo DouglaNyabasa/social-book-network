@@ -1,8 +1,10 @@
 package com.doug.socialbooknetwork.models;
 
+import com.doug.socialbooknetwork.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -11,35 +13,24 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Builder
+@SuperBuilder
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "feedback")
-@EntityListeners(AuditingEntityListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Feedback {
+public class Feedback extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
 
     Double note;
     String comment;
-    @CreatedDate
-    @Column(nullable = false,updatable = false)
-    LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(insertable = false)
-    LocalDateTime lastModifiedDate;
-    @CreatedBy
-    @Column(nullable = false,updatable = false)
-    Long createdBy;
-    @LastModifiedBy
-    @Column(insertable = false)
-    Long lastModifiedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    Book book;
+
 
 
 

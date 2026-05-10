@@ -1,30 +1,27 @@
 package com.doug.socialbooknetwork.models;
 
+import com.doug.socialbooknetwork.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Builder
+@SuperBuilder
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "books")
+@Table(name = "book")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EntityListeners(AuditingEntityListener.class)
-public class Book {
+public class Book extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-     Long id;
+
      String title;
      String authorName;
      String isbn;
@@ -32,17 +29,16 @@ public class Book {
      String bookCover;
      boolean archived;
      boolean shareable;
-     @CreatedDate
-     @Column(nullable = false,updatable = false)
-     LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(insertable = false)
-     LocalDateTime lastModifiedDate;
-    @CreatedBy
-     @Column(nullable = false,updatable = false)
-     Long createdBy;
-    @LastModifiedBy
-     @Column(insertable = false)
-     Long lastModifiedBy;
+
+     @ManyToOne
+     @JoinColumn(name = "owner_id")
+     User owner;
+
+     @OneToMany(mappedBy = "book")
+     List<Feedback> feedbacks;
+
+     @OneToMany(mappedBy = "book")
+     List<BookTransactionHistory> histories;
+
 
 }
