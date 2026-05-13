@@ -34,10 +34,10 @@ public class BaseEntity {
     @LastModifiedDate
     @Column(insertable = false)
     LocalDateTime lastModifiedDate;
-    @CreatedBy
-    @Column(nullable = false,updatable = false)
-    Long createdBy;
-    @LastModifiedBy
-    @Column(insertable = false)
-    Long lastModifiedBy;
+//    @CreatedBy
+//    @Column(nullable = false,updatable = false)
+//    Long createdBy;
+//    @LastModifiedBy
+//    @Column(insertable = false)
+//    Long lastModifiedBy;
 }

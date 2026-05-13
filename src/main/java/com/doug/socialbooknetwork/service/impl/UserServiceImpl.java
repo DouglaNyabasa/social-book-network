@@ -6,20 +6,28 @@ import com.doug.socialbooknetwork.models.Token;
 import com.doug.socialbooknetwork.models.User;
 import com.doug.socialbooknetwork.payload.request.AuthRequest;
 import com.doug.socialbooknetwork.payload.request.RegistrationRequest;
+import com.doug.socialbooknetwork.payload.request.UserMapper;
 import com.doug.socialbooknetwork.payload.response.AuthResponse;
 import com.doug.socialbooknetwork.repository.TokenRepository;
 import com.doug.socialbooknetwork.repository.UserRepository;
 import com.doug.socialbooknetwork.service.UserService;
+import com.doug.socialbooknetwork.utils.JwtUtil;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-
-import static com.doug.socialbooknetwork.utils.Constants.activationUrl;
+import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +37,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+
+
 
 
     @Override
@@ -42,8 +54,6 @@ public class UserServiceImpl implements UserService {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .accountLocked(false)
-                .enabled(false)
                 .roles(request.getRoles())
                 .build();
         userRepository.save(user);
@@ -90,8 +100,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AuthResponse authenticate(AuthRequest request) {
-        return null;
+    public AuthResponse login(AuthRequest request) throws Exception {
+        String email = request.getEmail();
+        String password = request.getPassword();
+        Authentication authentication = authenticate(email,password);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        String role = authorities.iterator().next().getAuthority();
+        String jwt = jwtUtil.generateToken(authentication);
+        User user = userRepository.existsByEmail(email)
+                .orElseThrow(() -> new Exception("User not found with email: " + email));
+        userRepository.save(user);
+
+
+        return AuthResponse.builder()
+                .token(jwt)
+                .message("Login Successful")
+                .user(UserMapper.toDTO(user))
+                .build();
+    }
+
+    public Authentication authenticate(String email, String password) {
+        try {
+            return authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
+        }catch (Exception e){
+            throw new BadCredentialsException("Invalid email or password");
+        }
     }
 
 

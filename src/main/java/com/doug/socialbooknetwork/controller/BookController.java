@@ -21,8 +21,8 @@ public class BookController {
     private final BookService service;
 
 
-    @PostMapping
-    public ResponseEntity<?> saveBook(@Valid @RequestBody BookRequest request, Authentication connectedUser){
-        return ResponseEntity.ok(service.save(request,connectedUser));
+    @PostMapping("/save")
+    public ResponseEntity<?> saveBook(@Valid @RequestBody BookRequest request, Long userId){
+        return ResponseEntity.ok(service.save(request,userId));
     }
 }

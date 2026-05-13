@@ -2,7 +2,6 @@ package com.doug.socialbooknetwork.controller;
 
 import com.doug.socialbooknetwork.payload.request.AuthRequest;
 import com.doug.socialbooknetwork.payload.request.RegistrationRequest;
-import com.doug.socialbooknetwork.payload.response.ApiResponse;
 import com.doug.socialbooknetwork.payload.response.AuthResponse;
 import com.doug.socialbooknetwork.service.UserService;
 import com.doug.socialbooknetwork.service.impl.UserServiceImpl;
@@ -32,8 +31,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody @Valid AuthRequest request){
-        return ResponseEntity.ok(userService.authenticate(request));
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody @Valid AuthRequest request) throws Exception {
+        return ResponseEntity.ok(userService.login(request));
     }
 
 

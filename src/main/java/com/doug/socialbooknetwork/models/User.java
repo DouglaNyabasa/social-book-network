@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User extends BaseEntity {
 
@@ -30,8 +30,6 @@ public class User extends BaseEntity {
     @Column(unique = true)
     String email;
     String password;
-    boolean accountLocked;
-    boolean enabled;
     @Enumerated(EnumType.STRING)
     @Column( nullable = false)
     Role roles;
